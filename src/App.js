@@ -3,6 +3,7 @@ import DeckGL from 'deck.gl'
 import { StaticMap } from 'react-map-gl'
 import { renderLayers } from '../src/components/Map'
 import { LayerControls, HEXAGON_CONTROLS } from './components/Control'
+import { tooltipStyle } from './components/Control/style'
 import csvFile from './data/ACT_Road_Crash_Data.csv'
 import { csv } from 'd3-fetch'
 
@@ -16,11 +17,16 @@ const INITIAL_VIEW_STATE = {
   minZoom: 5,
   maxZoom: 16,
   pitch: 45,
-  bearing: 0,
+  bearing: -27.396674584323023,
 }
 
 export default class App extends Component {
   state = {
+    hover: {
+      x: 0,
+      y: 0,
+      hoveredObject: null,
+    },
     points: [],
     style: 'mapbox://styles/mapbox/dark-v9',
     settings: Object.keys(HEXAGON_CONTROLS).reduce(
@@ -55,9 +61,45 @@ export default class App extends Component {
     this.setState({ settings })
   }
 
+  _renderTooltip() {
+    const { hoveredObject, pointerX, pointerY } = this.state || {}
+    return (
+      hoveredObject && (
+        <div
+          style={{
+            position: 'absolute',
+            zIndex: 1,
+            pointerEvents: 'none',
+            left: pointerX,
+            top: pointerY,
+          }}
+        >
+          {hoveredObject.INTERSECTOIN}
+        </div>
+      )
+    )
+  }
+
   render() {
+    const data = this.state.points
+    if (!data.length) {
+      return null
+    }
+    const { hover, settings } = this.state
+
     return (
       <div>
+        {hover.hoveredObject && (
+          <div
+            style={{
+              ...tooltipStyle,
+              transform: `translate(${hover.x}px, ${hover.y}px)`,
+            }}
+          >
+            <div>{hover.label}</div>
+          </div>
+        )}
+
         <LayerControls
           settings={this.state.settings}
           propTypes={HEXAGON_CONTROLS}
@@ -76,6 +118,7 @@ export default class App extends Component {
             mapStyle={this.state.style}
             mapboxApiAccessToken={MAPBOX_TOKEN}
           />
+          {this._renderTooltip()}
         </DeckGL>
       </div>
     )

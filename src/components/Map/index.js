@@ -41,7 +41,7 @@ const LIGHT_SETTINGS = {
 }
 
 export function renderLayers(props) {
-  const { data, settings } = props
+  const { data, onHover, settings } = props
 
   return [
     settings.showScatterplot &&
@@ -53,6 +53,12 @@ export function renderLayers(props) {
         getRadius: d => 10,
         opacity: 0.5,
         pickable: true,
+        onHover: info =>
+          this.setState({
+            hoveredObject: info.object,
+            pointerX: info.x,
+            pointerY: info.y,
+          }),
         radiusMinPixels: 0.25,
         radiusMaxPixels: 30,
         ...settings,
@@ -61,6 +67,7 @@ export function renderLayers(props) {
       new HexagonLayer({
         id: 'heatmap',
         data,
+        colorRange: HEATMAP_COLORS,
         coverage: 1,
         elevationRange: [0, 3000],
         elevationScale: 5,
@@ -70,6 +77,12 @@ export function renderLayers(props) {
         pickable: true,
         radius: 60,
         lightSettings: LIGHT_SETTINGS,
+        onHover: info =>
+          this.setState({
+            hoveredObject: info.object,
+            pointerX: info.x,
+            pointerY: info.y,
+          }),
         ...settings,
       }),
   ]
