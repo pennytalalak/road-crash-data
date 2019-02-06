@@ -23,13 +23,13 @@ export default class App extends Component {
   state = {
     points: [],
     style: 'mapbox://styles/mapbox/dark-v9',
-    settings: Object.keys(HEXAGON_CONTROLS).reduce(
-      (accu, key) => ({
-        ...accu,
-        [key]: HEXAGON_CONTROLS[key].value,
-      }),
-      {}
-    ),
+    // settings: Object.keys(HEXAGON_CONTROLS).reduce(
+    //   (accu, key) => ({
+    //     ...accu,
+    //     [key]: HEXAGON_CONTROLS[key].value,
+    //   }),
+    //   {}
+    // ),
   }
 
   componentDidMount() {
@@ -51,23 +51,23 @@ export default class App extends Component {
     })
   }
 
-  _updateLayerSettings(settings) {
-    this.setState({ settings })
-  }
+  // _updateLayerSettings(settings) {
+  //   this.setState({ settings })
+  // }
 
   render() {
     return (
       <div>
-        <LayerControls
+        {/* <LayerControls
           settings={this.state.settings}
           propTypes={HEXAGON_CONTROLS}
           onChange={settings => this._updateLayerSettings(settings)}
-        />
+        /> */}
 
         <DeckGL
           layers={renderLayers({
             data: this.state.points,
-            settings: this.state.settings,
+            // settings: this.state.settings,
           })}
           initialViewState={INITIAL_VIEW_STATE}
           controller

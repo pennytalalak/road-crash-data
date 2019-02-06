@@ -44,7 +44,7 @@ export function renderLayers(props) {
   const { data, settings } = props
 
   return [
-    settings.showScatterplot &&
+    // settings.showScatterplot &&
       new ScatterplotLayer({
         id: 'scatterplot',
         data,
@@ -57,18 +57,20 @@ export function renderLayers(props) {
         radiusMaxPixels: 30,
         ...settings,
       }),
-    settings.showHexagon &&
+    // settings.showHexagon &&
       new HexagonLayer({
         id: 'heatmap',
         data,
         coverage: 1,
-        elevationRange: [0, 3000],
-        elevationScale: 5,
+        elevationRange: [0, 10000],
+        elevationScale: 20,
         extruded: true,
         getPosition: d => d.position,
         opacity: 1,
+        coverage: 1,
+        radius: 30,
+        upperPercentile: 99,
         pickable: true,
-        radius: 60,
         lightSettings: LIGHT_SETTINGS,
         ...settings,
       }),
