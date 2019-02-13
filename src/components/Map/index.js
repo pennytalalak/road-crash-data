@@ -20,10 +20,11 @@ const LIGHT_SETTINGS = {
   numberOfLights: 2,
 }
 
-export function renderLayers(props) {
+export function renderLayers(data, settings) {
   // const { data, settings } = props
-  const data = props.data
-
+  // const data =
+  
+  console.log('DATA FROM MAP', data);
   return [
     // settings.showScatterplot &&
     new ScatterplotLayer({
@@ -52,6 +53,5 @@ export function renderLayers(props) {
       pickable: true,
       lightSettings: LIGHT_SETTINGS,
     }),
-    console.log('DATA FROM MAP', data),
   ]
 }
